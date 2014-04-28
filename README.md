@@ -9,6 +9,9 @@ callviz
 ##usage
 
 1. Use the @viz decorator to instrument the recursive function.
+> @viz
+> def factorial(n):
+
 2. Render the recursion with 
 
 > callgraph.render("outfile.png") 
@@ -41,3 +44,9 @@ callgraph.render("sort.png")
 Note:
 1. The edges are numbered by the order in which they were traversed by the execution.
 2. The edges are colored from black to grey to indicate order of traversal : black edges first, grey edges last.
+
+## dependencies
+
+This requires graphviz and pygraphviz to work.
+
+
