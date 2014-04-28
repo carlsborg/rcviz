@@ -37,3 +37,7 @@ callgraph.render("sort.png")
 ## output 
 ![quicksort callviz output](http://s12.postimg.org/5f3eonikd/sort.png)
 
+
+Note:
+1. The edges are numbered by the order in which they were traversed by the execution.
+2. The edges are colored from black to grey to indicate order of traversal : black edges first, grey edges last.
