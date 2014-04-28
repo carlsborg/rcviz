@@ -1,54 +1,91 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Callviz by carlsborg</title>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Callviz : Python call graph visualization for recursive functions. " />
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Callviz</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Callviz</h1>
-        <p>Python call graph visualization for recursive functions. Provides a decorator to instrument the target function. Uses pygraphviz to render the recursion visualization.</p>
 
-        <p class="view"><a href="https://github.com/carlsborg/callviz">View the Project on GitHub <small>carlsborg/callviz</small></a></p>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/carlsborg/callviz">View on GitHub</a>
 
+          <h1 id="project_title">Callviz</h1>
+          <h2 id="project_tagline">Python call graph visualization for recursive functions. </h2>
 
-        <ul>
-          <li><a href="https://github.com/carlsborg/callviz/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/carlsborg/callviz/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/carlsborg/callviz">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/carlsborg/callviz/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/carlsborg/callviz/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>
 <a name="callviz" class="anchor" href="#callviz"><span class="octicon octicon-link"></span></a>callviz</h1>
 
-<p>Python call graph visualization for recursive functions. Provides a decorator to instrument the target function and pygraphviz to render the recursion visualization.</p>
-
-<p>usage##</p>
+<ul>
+<li>Python module to visualize a recursion as a tree with arguments and return values at each node. </li>
+<li>Provides a decorator to instrument target functions (as opposed to trace or debugger based approaches)<br>
+</li>
+<li>Uses pygraphviz to render the graph. </li>
+</ul><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>usage</h2>
 
 <ol>
 <li>Use the <a href="https://github.com/viz" class="user-mention">@viz</a> decorator to instrument the recursive function.</li>
-<li>Render the recursion with 
-&gt; callgraph.render("outfile.png") </li>
-</ol><p>The file type is derived from the file name. Supported types include .dot (graphviz dot file), .png (png image), .svg (vector graphic)</p>
+<li>Render the recursion with </li>
+</ol><blockquote>
+<p>callgraph.render("outfile.png") </p>
+</blockquote>
 
-<p>example##</p>
+<p>The output file type is derived from the file name. Supported types include .dot (graphviz dot file), .png (png image), .svg (vector graphic)</p>
+
+<h2>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>example</h2>
+
+<div class="highlight highlight-python"><pre><span class="kn">from</span> <span class="nn">callviz</span> <span class="kn">import</span> <span class="n">callgraph</span><span class="p">,</span> <span class="n">viz</span>
+
+<span class="nd">@viz</span>
+<span class="k">def</span> <span class="nf">quicksort</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span> 
+        <span class="k">return</span> <span class="n">items</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pivot</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">lesser</span> <span class="o">=</span> <span class="n">quicksort</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">pivot</span><span class="p">])</span>
+        <span class="n">greater</span> <span class="o">=</span> <span class="n">quicksort</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="n">pivot</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">lesser</span> <span class="o">+</span> <span class="p">[</span><span class="n">pivot</span><span class="p">]</span> <span class="o">+</span> <span class="n">greater</span>
+
+<span class="k">print</span> <span class="n">quicksort</span><span class="p">(</span> <span class="nb">list</span><span class="p">(</span><span class="s">"helloworld"</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">callgraph</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">"sort.png"</span><span class="p">)</span>
+</pre></div>
+
+<h2>
+<a name="output" class="anchor" href="#output"><span class="octicon octicon-link"></span></a>output</h2>
+
+<p><img src="http://s12.postimg.org/5f3eonikd/sort.png" alt="quicksort callviz output"></p>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/carlsborg">carlsborg</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Callviz maintained by <a href="https://github.com/carlsborg">carlsborg</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+
     
+
   </body>
 </html>
