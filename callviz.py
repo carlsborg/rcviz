@@ -1,3 +1,8 @@
+# callviz : a small recursion call graph vizualization decorator
+# Copyright (c) Ran Dugal 2014
+# Licensed under the GPLv2, which is available at 
+# http://www.gnu.org/licenses/gpl-2.0.html
+
 import inspect
 import pygraphviz as gviz
 import logging
