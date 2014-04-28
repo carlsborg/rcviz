@@ -9,7 +9,7 @@ callviz
 ##usage
 
 1. Use the @viz decorator to instrument the recursive function.
-> @viz
+> @viz <br>
 > def factorial(n):
 
 2. Render the recursion with 
