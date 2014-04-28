@@ -9,13 +9,10 @@ callviz
 ##usage
 
 1. Use the @viz decorator to instrument the recursive function.
-
 > @viz
-
 > def factorial(n):
 
 2. Render the recursion with 
-
 > callgraph.render("outfile.png") 
 
 The output file type is derived from the file name. Supported types include .dot (graphviz dot file), .png (png image), .svg (vector graphic)
