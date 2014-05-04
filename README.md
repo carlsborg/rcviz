@@ -1,5 +1,5 @@
 
-callviz
+rcviz
 =======
 
 * Python module to visualize a recursion as a tree with arguments and return values at each node. 
@@ -20,7 +20,7 @@ The output file type is derived from the file name. Supported types include .dot
 ##example
 
 ```python
-from callviz import callgraph, viz
+from rcviz import callgraph, viz
 
 @viz
 def quicksort(items):
@@ -37,7 +37,7 @@ callgraph.render("sort.png")
 ```
 
 ## output 
-![quicksort callviz output](http://s12.postimg.org/5f3eonikd/sort.png)
+![quicksort rcviz output](http://s12.postimg.org/5f3eonikd/sort.png)
 
 
 Note:
@@ -47,5 +47,8 @@ Note:
 ## dependencies
 
 This requires graphviz and pygraphviz to work.
+
+Tested on python 2.7.3
+
 
 

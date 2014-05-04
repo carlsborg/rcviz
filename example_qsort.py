@@ -1,7 +1,7 @@
 
-from callviz import callgraph, viz
+from rcviz import callgraph, viz
 
-@viz
+@viz 
 def quicksort(items):
     if len(items) <= 1: 
         return items

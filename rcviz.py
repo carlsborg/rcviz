@@ -3,6 +3,7 @@
 # Licensed under the GPLv2, which is available at 
 # http://www.gnu.org/licenses/gpl-2.0.html
 
+
 import inspect
 import pygraphviz as gviz
 import logging
@@ -13,7 +14,8 @@ class callgraph(object):
 	'''
 
 	_callers = {} # caller_fn_id : node_data
-	_counter = 1
+	_counter = 1  # track call order
+	_unwindcounter = 1 # track unwind order
 	_frames = [] # keep frame objects reference
 
 	@staticmethod
@@ -21,6 +23,7 @@ class callgraph(object):
 		callgraph._callers = {}
 		callgraph._counter = 1
 		callgraph._frames = []
+		callgraph._unwindcounter = 1
 		
 	@staticmethod
 	def get_callers():
@@ -31,15 +34,23 @@ class callgraph(object):
 		return callgraph._counter
 
 	@staticmethod
+	def get_unwindcounter():
+		return callgraph._unwindcounter
+
+	@staticmethod
 	def increment():
 		callgraph._counter += 1
+
+	@staticmethod
+	def increment_unwind():
+		callgraph._unwindcounter  += 1
 
 	@staticmethod
 	def get_frames():
 		return callgraph._frames
 
-	@staticmethod		
-	def render(filename):
+	@staticmethod
+	def render(filename, show_null_returns=True):
 
 		if not filename: 
 			filename = "out.svg"
@@ -49,7 +60,11 @@ class callgraph(object):
 
 		# create nodes
 		for frame_id, node in callgraph._callers.iteritems():
-			g.add_node( frame_id, shape='Mrecord', label= "{ %s(%s) | ret: %s }" % (node.fn_name, node.argstr(), node.ret), fontsize=13, labelfontsize=13)
+			if not show_null_returns and node.ret is None:
+				label= "{ %s(%s) }" % (node.fn_name, node.argstr())
+			else:
+				label= "{ %s(%s) | ret: %s }" % (node.fn_name, node.argstr(), node.ret)
+			g.add_node( frame_id, shape='Mrecord', label=label, fontsize=13, labelfontsize=13)
 
 		# edge colors
 		step = 200 / callgraph._counter
@@ -57,11 +72,25 @@ class callgraph(object):
 
 		# create edges
 		for frame_id, node in callgraph._callers.iteritems():
-			for (child_id, counter) in node.child_methods:
+			child_nodes = []
+			for child_id, counter, unwind_counter in node.child_methods:
+				child_nodes.append(child_id)
 				cur_color = step * counter
-				color = "#%2x%2x%2x" % (cur_color, cur_color, cur_color )
-				g.add_edge( frame_id, child_id, label=str(counter), color= color, fontsize=8, labelfontsize=8, fontcolor="#999999" )
-			logging.info( "%s, %s" % (frame_id, node) ) 
+				color = "#%2x%2x%2x" % (cur_color, cur_color, cur_color)
+				label = "%s (&uArr;%s)" % (counter, unwind_counter)
+				g.add_edge( frame_id, child_id, label=label, color= color, fontsize=8, labelfontsize=8, fontcolor="#999999" )
+
+			# order edges l to r
+			if len(child_nodes) > 1:
+				sg = g.add_subgraph(child_nodes, rank='same')
+				sg.graph_attr['rank']='same'				
+				prev_node = None
+				for child_node in child_nodes:
+					if prev_node:		
+						sg.add_edge( prev_node,  child_node, color="#ffffff" )
+					prev_node = child_node
+
+			#logging.info( "%s, %s" % (frame_id, node) )
 
 		g.layout()
 
@@ -95,7 +124,7 @@ class viz(object):
 	def __init__(self, wrapped):
 		self._verbose = False
 		self.wrapped = wrapped
-		print "initing ", id(self)
+		#print "initing ", id(self)
 
 	def __call__(self, *args, **kwargs):
 
@@ -125,14 +154,21 @@ class viz(object):
 		if  this_frame_id not in g_callers.keys():
 			g_callers[this_frame_id] = node_data(args, kwargs, self.wrapped.__name__, None, [])
 
+		edgeinfo = None
 		if caller_frame_id:
-			g_callers[caller_frame_id].child_methods.append((this_frame_id, callgraph.get_counter()))
+			edgeinfo = [this_frame_id, callgraph.get_counter()]
+			g_callers[caller_frame_id].child_methods.append( edgeinfo )
 			callgraph.increment()
 
+		# invoke wraped
 		ret = self.wrapped(*args, **kwargs)
 
 		if (self._verbose):
 			logging.debug('unwinding frame id: %s' % this_frame_id)
+
+		if edgeinfo:
+			edgeinfo.append( callgraph.get_unwindcounter() )
+			callgraph.increment_unwind()
 
 		g_callers[this_frame_id].ret = ret
 
