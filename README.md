@@ -37,8 +37,7 @@ callgraph.render("sort.png")
 ```
 
 ## output 
-![quicksort rcviz output](http://s12.postimg.org/5f3eonikd/sort.png)
-
+![quicksort rcviz output](http://s30.postimg.org/7chmr6q35/sort.png)
 
 Note:
 1. The edges are numbered by the order in which they were traversed by the execution.
@@ -48,7 +47,13 @@ Note:
 
 This requires graphviz and pygraphviz to work.
 
+On ubuntu: 
+
+> sudo apt-get install graphviz
+> sudo apt-get install libgraphviz-dev
+> sudo python setup.py install
+
 Tested on python 2.7.3
 
-
+Setup script by [adampetrovic](https://github.com/adampetrovic).
 
