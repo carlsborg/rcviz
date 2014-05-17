@@ -1,6 +1,6 @@
 # callviz : a small recursion call graph vizualization decorator
 # Copyright (c) Ran Dugal 2014
-# Licensed under the GPLv2, which is available at 
+# Licensed under the GPLv2, which is available at
 # http://www.gnu.org/licenses/gpl-2.0.html
 
 
@@ -9,7 +9,7 @@ import pygraphviz as gviz
 import logging
 
 class callgraph(object):
-	'''singleton class that stores global graph data 
+	'''singleton class that stores global graph data
 	   draw graph using pygraphviz
 	'''
 
@@ -24,7 +24,7 @@ class callgraph(object):
 		callgraph._counter = 1
 		callgraph._frames = []
 		callgraph._unwindcounter = 1
-		
+
 	@staticmethod
 	def get_callers():
 		return callgraph._callers
@@ -52,7 +52,7 @@ class callgraph(object):
 	@staticmethod
 	def render(filename, show_null_returns=True):
 
-		if not filename: 
+		if not filename:
 			filename = "out.svg"
 
 		g = gviz.AGraph(strict=False, directed=True)
@@ -83,10 +83,10 @@ class callgraph(object):
 			# order edges l to r
 			if len(child_nodes) > 1:
 				sg = g.add_subgraph(child_nodes, rank='same')
-				sg.graph_attr['rank']='same'				
+				sg.graph_attr['rank']='same'
 				prev_node = None
 				for child_node in child_nodes:
-					if prev_node:		
+					if prev_node:
 						sg.add_edge( prev_node,  child_node, color="#ffffff" )
 					prev_node = child_node
 
@@ -101,7 +101,7 @@ class callgraph(object):
 class node_data(object):
 
 	def __init__(self, _args=None, _kwargs=None, _fnname="", _ret=None, _childmethods=[]):
-		self.args  	= _args 
+		self.args  	= _args
 		self.kwargs = _kwargs
 		self.fn_name = _fnname
 		self.ret	= _ret
