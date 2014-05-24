@@ -49,9 +49,8 @@ This requires graphviz and pygraphviz to work.
 
 On ubuntu: 
 
-> sudo apt-get install graphviz
-> sudo apt-get install libgraphviz-dev
-> sudo python setup.py install
+> $sudo apt-get install graphviz libgraphviz-dev<br>
+> $sudo python setup.py install <br>
 
 Tested on python 2.7.3
 
