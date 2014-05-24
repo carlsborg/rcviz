@@ -49,7 +49,7 @@ Show intermediate values of local variables in the output render by invoking dec
 
 ```python
 	pivot = items[0]
-	quicksort.track(pivot=pivot) # shows a new row in each node 
+	quicksort.track(the_pivot=pivot) # shows a new row labelled the_pivot in each node 
 ```
 
 ## dependencies
