@@ -7,6 +7,7 @@
 import inspect
 import pygraphviz as gviz
 import logging
+import copy
 
 class callgraph(object):
 	'''singleton class that stores global graph data
@@ -60,10 +61,15 @@ class callgraph(object):
 
 		# create nodes
 		for frame_id, node in callgraph._callers.iteritems():
+
+			auxstr = ""
+			for param, val in node.auxdata.iteritems():
+				auxstr += " | %s: %s" % (param, val) 
+
 			if not show_null_returns and node.ret is None:
-				label= "{ %s(%s) }" % (node.fn_name, node.argstr())
+				label= "{ %s(%s) %s }" % (node.fn_name, node.argstr(), auxstr)
 			else:
-				label= "{ %s(%s) | ret: %s }" % (node.fn_name, node.argstr(), node.ret)
+				label= "{ %s(%s) %s | ret: %s }" % (node.fn_name, node.argstr(), auxstr, node.ret)
 			g.add_node( frame_id, shape='Mrecord', label=label, fontsize=13, labelfontsize=13)
 
 		# edge colors
@@ -107,6 +113,8 @@ class node_data(object):
 		self.ret	= _ret
 		self.child_methods = _childmethods	# [ (method, gcounter) ]
 
+		self.auxdata = {} # user assigned track data
+
 	def __str__(self):
 		return "%s -> child_methods: %s" % (self.nodestr(), self.child_methods)
 
@@ -124,7 +132,13 @@ class viz(object):
 	def __init__(self, wrapped):
 		self._verbose = False
 		self.wrapped = wrapped
-		#print "initing ", id(self)
+
+	def track(self, **kwargs):
+		call_frame_id = id(inspect.stack()[2][0])
+		g_callers = callgraph.get_callers()
+		node = g_callers.get(call_frame_id)
+		if node:
+			node.auxdata.update( copy.deepcopy(kwargs) )
 
 	def __call__(self, *args, **kwargs):
 
@@ -170,7 +184,7 @@ class viz(object):
 			edgeinfo.append( callgraph.get_unwindcounter() )
 			callgraph.increment_unwind()
 
-		g_callers[this_frame_id].ret = ret
+		g_callers[this_frame_id].ret = copy.deepcopy(ret)
 
 		return ret
 
