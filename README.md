@@ -43,6 +43,15 @@ Note:
 1. The edges are numbered by the order in which they were traversed by the execution.
 2. The edges are colored from black to grey to indicate order of traversal : black edges first, grey edges last.
 
+*Experimental*
+
+Show intermediate values of local variables in the output render by invoking decoratedfunction.track(param1=val1, param2=val2,...). In the quicksort example above you can track the pivot with:
+
+```python
+	pivot = items[0]
+	quicksort.track(pivot=pivot) # shows a new row in each node 
+```
+
 ## dependencies
 
 This requires graphviz and pygraphviz to work.
