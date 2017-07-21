@@ -16,13 +16,13 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='rcviz',
-    version='0.1',
+    version='0.2',
     description='Python call graph visualization for recursive functions',
     author='Ran',
     author_email='dugal@gmx.com',
     url='https://github.com/carlsborg/rcviz',
     packages=['rcviz'],
     include_package_data=True,
-    install_requires=['pygraphviz'],
+    install_requires=['graphviz'],
     zip_safe=False,
 )
