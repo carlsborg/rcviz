@@ -1,3 +1,1 @@
-
-from .rcviz import callgraph, viz
-
+from .rcviz import CallGraph, viz
