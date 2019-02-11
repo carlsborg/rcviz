@@ -54,14 +54,24 @@ Show intermediate values of local variables in the output render by invoking dec
 
 ## dependencies
 
-This requires graphviz and pygraphviz to work.
-
-On ubuntu: 
+This requires the native graphviz and libgraphviz-dev packages pre-installed. e.g. On ubuntu do: 
 
 > $sudo apt-get install graphviz libgraphviz-dev<br>
-> $sudo python setup.py install <br>
 
-Tested on python 2.7.3
+then
+
+For python2:
+
+> python -m virtualenv .venv
+> source .venv/bin/activate
+> python setup.py install <br>
+
+For python3.x:
+> python -m venv .venv
+> source .venv/bin/activate
+> python setup.py install <br>
+
+Tested on python 2.7.3 and python 3.6 
 
 Setup script by [adampetrovic](https://github.com/adampetrovic).
 

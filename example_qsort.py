@@ -1,9 +1,10 @@
 
 from rcviz import callgraph, viz
 
-@viz 
+
+@viz
 def quicksort(items):
-    if len(items) <= 1: 
+    if len(items) <= 1:
         return items
     else:
         pivot = items[0]
@@ -11,7 +12,7 @@ def quicksort(items):
         greater = quicksort([x for x in items[1:] if x >= pivot])
         return lesser + [pivot] + greater
 
-print quicksort( list("helloworld") )
+
+print(quicksort(list("helloworld")))
 
 callgraph.render("sort.png")
-

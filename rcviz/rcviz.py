@@ -61,10 +61,10 @@ class callgraph(object):
         g.graph_attr['label'] = 'nodes=%s' % len(callgraph._callers)
 
         # create nodes
-        for frame_id, node in callgraph._callers.iteritems():
+        for frame_id, node in callgraph._callers.items():
 
             auxstr = ""
-            for param, val in node.auxdata.iteritems():
+            for param, val in node.auxdata.items():
                 auxstr += " | %s: %s" % (param, val)
 
             if not show_null_returns and node.ret is None:
@@ -78,12 +78,12 @@ class callgraph(object):
         cur_color = 0
 
         # create edges
-        for frame_id, node in callgraph._callers.iteritems():
+        for frame_id, node in callgraph._callers.items():
             child_nodes = []
             for child_id, counter, unwind_counter in node.child_methods:
                 child_nodes.append(child_id)
                 cur_color = step * counter
-                color = "#%2x%2x%2x" % (cur_color, cur_color, cur_color)
+                color = "#%2x%2x%2x" % (int(cur_color), int(cur_color), int(cur_color))
                 label = "%s (&uArr;%s)" % (counter, unwind_counter)
                 g.add_edge(frame_id, child_id, label=label, color=color, fontsize=8, labelfontsize=8, fontcolor="#999999")
 
@@ -103,7 +103,7 @@ class callgraph(object):
 
         g.draw(path=filename, prog='dot')
 
-        print "callviz: rendered to %s" % filename
+        print("callviz: rendered to %s" % filename)
 
 
 class node_data(object):
