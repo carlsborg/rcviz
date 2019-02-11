@@ -6,7 +6,7 @@ rcviz
 * Provides a decorator to instrument target functions (as opposed to trace or debugger based approaches)  
 * Uses pygraphviz to render the graph. 
 
-##usage
+## usage
 
 1. Use the @viz decorator to instrument the recursive function.
 > @viz <br>
@@ -17,7 +17,7 @@ rcviz
 
 The output file type is derived from the file name. Supported types include .dot (graphviz dot file), .png (png image), .svg (vector graphic)
 
-##example
+## example
 
 ```python
 from rcviz import callgraph, viz
