@@ -17,7 +17,12 @@ rcviz
 
 The output file type is derived from the file name. Supported types include .dot (graphviz dot file), .png (png image), .svg (vector graphic)
 
+
 ## example
+
+Output for recursive Fibonacci function and for a Recursive Descent parse can be found on this [blog post](https://zvzzt.wordpress.com/2014/05/03/python-recursion-visualization-with-rcviz)
+
+
 
 ```python
 from rcviz import callgraph, viz
