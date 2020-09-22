@@ -37,7 +37,7 @@ def quicksort(items):
         greater = quicksort([x for x in items[1:] if x >= pivot])
         return lesser + [pivot] + greater
 
-print quicksort( list("helloworld") )
+print(quicksort( list("helloworld")))
 callgraph.render("sort.png")
 ```
 
