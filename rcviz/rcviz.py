@@ -3,22 +3,21 @@
 # Licensed under the GPLv2, which is available at
 # http://www.gnu.org/licenses/gpl-2.0.html
 
-
 import inspect
 import pygraphviz as gviz
 import logging
 import copy
-
+from typing import Dict, List
 
 class callgraph(object):
     '''singleton class that stores global graph data
        draw graph using pygraphviz
     '''
 
-    _callers = {}  # caller_fn_id : node_data
+    _callers: Dict[int, node_data] = {}  # caller_fn_id : node_data
     _counter = 1  # track call order
     _unwindcounter = 1  # track unwind order
-    _frames = []  # keep frame objects reference
+    _frames: List[int] = []  # keep frame objects reference
 
     @staticmethod
     def reset():
@@ -70,8 +69,10 @@ class callgraph(object):
             if not show_null_returns and node.ret is None:
                 label = "{ %s(%s) %s }" % (node.fn_name, node.argstr(), auxstr)
             else:
-                label = "{ %s(%s) %s | ret: %s }" % (node.fn_name, node.argstr(), auxstr, node.ret)
-            g.add_node(frame_id, shape='Mrecord', label=label, fontsize=13, labelfontsize=13)
+                label = "{ %s(%s) %s | ret: %s }" % (
+                    node.fn_name, node.argstr(), auxstr, node.ret)
+            g.add_node(frame_id, shape='Mrecord', label=label,
+                       fontsize=13, labelfontsize=13)
 
         # edge colors
         step = 200 / callgraph._counter
@@ -83,9 +84,11 @@ class callgraph(object):
             for child_id, counter, unwind_counter in node.child_methods:
                 child_nodes.append(child_id)
                 cur_color = step * counter
-                color = "#%2x%2x%2x" % (int(cur_color), int(cur_color), int(cur_color))
+                color = "#%2x%2x%2x" % (
+                    int(cur_color), int(cur_color), int(cur_color))
                 label = "%s (&uArr;%s)" % (counter, unwind_counter)
-                g.add_edge(frame_id, child_id, label=label, color=color, fontsize=8, labelfontsize=8, fontcolor="#999999")
+                g.add_edge(frame_id, child_id, label=label, color=color,
+                           fontsize=8, labelfontsize=8, fontcolor="#999999")
 
             # order edges l to r
             if len(child_nodes) > 1:
@@ -125,7 +128,8 @@ class node_data(object):
 
     def argstr(self):
         s_args = ",".join([str(arg) for arg in self.args])
-        s_kwargs = ",".join([(str(k), str(v)) for (k, v) in self.kwargs.items()])
+        s_kwargs = ",".join([(str(k), str(v))
+                             for (k, v) in self.kwargs.items()])
         return "%s%s" % (s_args, s_kwargs)
 
 
@@ -159,7 +163,8 @@ class viz(object):
         if len(fullstack) > 2:
             caller_frame_id = id(fullstack[2][0])
             if (self._verbose):
-                logging.debug("caller frame: %s %s" % (caller_frame_id, fullstack[2]))
+                logging.debug("caller frame: %s %s" %
+                              (caller_frame_id, fullstack[2]))
 
         this_frame_id = id(fullstack[0][0])
         if (self._verbose):
@@ -169,7 +174,8 @@ class viz(object):
             g_frames.append(fullstack[0][0])
 
         if this_frame_id not in g_callers.keys():
-            g_callers[this_frame_id] = node_data(args, kwargs, self.wrapped.__name__, None, [])
+            g_callers[this_frame_id] = node_data(
+                args, kwargs, self.wrapped.__name__, None, [])
 
         edgeinfo = None
         if caller_frame_id:
