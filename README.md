@@ -17,7 +17,10 @@ You can run rcviz-annotated python code in your browser, with this [incredible p
 > @viz <br>
 > def factorial(n):
 
-2. Render the recursion with 
+2. Call the function
+> factorial(8)
+
+3. Render the recursion with 
 > callgraph.render("outfile.png") 
 
 The output file type is derived from the file name. Supported types include .dot (graphviz dot file), .png (png image), .svg (vector graphic)
