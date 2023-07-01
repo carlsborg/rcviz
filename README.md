@@ -57,6 +57,10 @@ Show intermediate values of local variables in the output render by invoking dec
 	quicksort.track(the_pivot=pivot) # shows a new row labelled the_pivot in each node 
 ```
 
+## (new in 2022) run this in your browser!
+
+You can run rcviz-annotated python code in your browser, with this [incredible pyiodide based web app](https://www.recursionvisualizer.com/) by [@pamelafox](https://github.com/pamelafox/recursive-visualizations), and generate the same recursion visualizations that you would with the command line.
+
 ## dependencies
 
 This requires the native graphviz and libgraphviz-dev packages pre-installed. e.g. On ubuntu do: 
