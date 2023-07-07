@@ -51,7 +51,7 @@ callgraph.render("sort.png")
 ```
 
 ## Output 
-![quicksort rcviz output](example/sort.png)
+![quicksort rcviz output](examples/sort.png)
 
 Note:
 1. The edges are numbered by the order in which they were traversed by the execution.
