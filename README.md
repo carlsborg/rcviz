@@ -6,12 +6,13 @@ rcviz
 * Provides a decorator to instrument target functions (as opposed to trace or debugger based approaches)  
 * Uses pygraphviz to render the graph. 
 
-## (new in 2022) run this in your browser!
+## Updates
 
-You can run rcviz-annotated python code in your browser, with this [incredible pyiodide based web app](https://www.recursionvisualizer.com/) by [@pamelafox](https://github.com/pamelafox/recursive-visualizations), and generate the same recursion visualizations that you would with the command line.
+* Jun-2023:  Jupyter notebook integration. Invoke callgraph.render() with no params from inside a notebook and it renders the visualization as a png in your notebook. See examples folder.
 
+* Oct-2021: Run this in your browser! You can run rcviz-annotated python code in your browser, with this [incredible pyiodide based web app](https://www.recursionvisualizer.com/) by [@pamelafox](https://github.com/pamelafox/recursive-visualizations), and generate the same recursion visualizations that you would with the command line.
 
-## usage
+## Usage
 
 1. Use the @viz decorator to instrument the recursive function.
 > @viz <br>
@@ -23,12 +24,12 @@ You can run rcviz-annotated python code in your browser, with this [incredible p
 3. Render the recursion with 
 > callgraph.render("outfile.png") 
 
-The output file type is derived from the file name. Supported types include .dot (graphviz dot file), .png (png image), .svg (vector graphic)
+The output file type is derived from the file name. Supported types include .dot (graphviz dot file), .png (png image), .svg (vector graphic). No params writes to out.svg
 
 
-## example
+## Example
 
-Output for recursive Fibonacci function and for a Recursive Descent parse can be found on this [blog post](https://zvzzt.wordpress.com/2014/05/03/python-recursion-visualization-with-rcviz)
+Output for recursive Fibonacci function and for a Recursive Descent parse can be found in the ./examples folder and on this [blog post](https://zvzzt.wordpress.com/2014/05/03/python-recursion-visualization-with-rcviz) and 
 
 
 
@@ -49,14 +50,14 @@ print quicksort( list("helloworld") )
 callgraph.render("sort.png")
 ```
 
-## output 
+## Output 
 ![quicksort rcviz output](example/sort.png)
 
 Note:
 1. The edges are numbered by the order in which they were traversed by the execution.
 2. The edges are colored from black to grey to indicate order of traversal : black edges first, grey edges last.
 
-*Experimental*
+## Auxiliary node data
 
 Show intermediate values of local variables in the output render by invoking decoratedfunction.track(param1=val1, param2=val2,...). In the quicksort example above you can track the pivot with:
 
@@ -65,26 +66,28 @@ Show intermediate values of local variables in the output render by invoking dec
 	quicksort.track(the_pivot=pivot) # shows a new row labelled the_pivot in each node 
 ```
 
-## dependencies
+## Installation
 
-This requires the native graphviz and libgraphviz-dev packages pre-installed. e.g. On ubuntu do: 
+rviz depends on pygraphviz which is a python api into graphviz. See install instructions for your platform [here](https://pygraphviz.github.io/documentation/stable/install.html). Basically you need to install graphviz using your OS package manager, or  download it from [here](https://graphviz.org/download/) and also the graphviz-dev (ubuntu) or graphviz-devel (fedora) package
 
-> $sudo apt-get install graphviz libgraphviz-dev<br>
+#### Linux - Fedora 
 
-then
+> sudo dnf install graphviz graphviz-devel
 
-For python2:
+You can test the graphviz install with:
 
-> python -m virtualenv .venv
-> source .venv/bin/activate
-> python setup.py install <br>
+> $echo 'digraph { a -> b }' | dot -Tsvg > output.svg
 
-For python3.x:
-> python -m venv .venv
-> source .venv/bin/activate
-> python setup.py install <br>
+> $pip install pygraphviz --user
 
-Tested on python 2.7.3 and python 3.6 
+#### Linux - install troubleshooting
 
-Setup script by [adampetrovic](https://github.com/adampetrovic).
+Note: if the install fails, pygraphviz is trying to build a library, first install 
+
+> $sudo dnf install python-devel python-wheel
+> $sudo groupinstall "Development Tools"
+
+And now pip install pygraphviz runs cleanly, and therefore also pip install rcviz
+
+> $pip install pygraphviz --user
 
