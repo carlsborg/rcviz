@@ -8,7 +8,7 @@ rcviz
 
 ## Updates
 
-* Jun-2023:  Jupyter notebook integration. Invoke callgraph.render() with no params from inside a notebook and it renders the visualization as a png in your notebook. See examples folder.
+* Jun-2023:  Jupyter notebook integration. Invoke callgraph.render() with no params from inside a notebook and it renders the visualization as a png in your notebook. See [fibonacci.ipynb](https://github.com/carlsborg/rcviz/blob/master/examples/fibonacci.ipynb) in the examples folder.
 
 * Oct-2021: Run this in your browser! You can run rcviz-annotated python code in your browser, with this [incredible pyiodide based web app](https://www.recursionvisualizer.com/) by [@pamelafox](https://github.com/pamelafox/recursive-visualizations), and generate the same recursion visualizations that you would with the command line.
 
