@@ -1,12 +1,14 @@
 from typing import List, Tuple
+from copy import deepcopy
+
 
 class node_data(object):
 
     def __init__(self, _args=None, _kwargs=None, _fnname="", _ret=None, _childmethods=[]):
-        self.args = _args
-        self.kwargs = _kwargs
+        self.args = deepcopy(_args)
+        self.kwargs = deepcopy(_kwargs)
         self.fn_name = _fnname
-        self.ret = _ret
+        self.ret = deepcopy(_ret)
         self.child_methods: List[Tuple[str, int]] = _childmethods  # [ (method, gcounter) ]
 
         self.auxdata = {}  # user assigned track data
@@ -22,5 +24,4 @@ class node_data(object):
         s_kwargs = ",".join([(str(k), str(v))
                              for (k, v) in self.kwargs.items()])
         return "%s%s" % (s_args, s_kwargs)
-
 
